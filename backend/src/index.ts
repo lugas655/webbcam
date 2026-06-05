@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
   });
 
   // WebRTC Signaling: Offer
-  socket.on('offer', (payload: { target: string; offer: RTCSessionDescriptionInit }) => {
+  socket.on('offer', (payload: { target: string; offer: any }) => {
     io.to(payload.target).emit('offer', {
       caller: socket.id,
       offer: payload.offer,
@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
   });
 
   // WebRTC Signaling: Answer
-  socket.on('answer', (payload: { target: string; answer: RTCSessionDescriptionInit }) => {
+  socket.on('answer', (payload: { target: string; answer: any }) => {
     io.to(payload.target).emit('answer', {
       caller: socket.id,
       answer: payload.answer,
@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
   });
 
   // WebRTC Signaling: ICE Candidate
-  socket.on('ice-candidate', (payload: { target: string; candidate: RTCIceCandidateInit }) => {
+  socket.on('ice-candidate', (payload: { target: string; candidate: any }) => {
     io.to(payload.target).emit('ice-candidate', {
       caller: socket.id,
       candidate: payload.candidate,
