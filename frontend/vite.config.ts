@@ -13,5 +13,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // Important for accessing via phone on local network
     port: 5173,
+    allowedHosts: true, // Allow external domain access
   },
 });
