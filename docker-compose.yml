@@ -20,7 +20,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-webcam_db}?schema=public
       - PORT=3001
-      - CORS_ORIGIN=http://localhost:5173
+      - CORS_ORIGIN=http://webcam.sayadewe.my.id:5173
     depends_on:
       - postgres
     networks:
@@ -32,7 +32,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_BACKEND_URL=http://localhost:3001
+      - VITE_BACKEND_URL=http://webcam.sayadewe.my.id:3001
     depends_on:
       - backend
     networks:
