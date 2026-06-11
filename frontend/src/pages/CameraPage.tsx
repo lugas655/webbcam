@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, RefreshCw, X, Zap } from 'lucide-react';
+import { RefreshCw, X, Zap } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useWebRTC } from '../lib/useWebRTC';
 

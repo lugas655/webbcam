@@ -45,6 +45,12 @@ io.on('connection', (socket) => {
       room.sender = socket.id;
       // Notify receivers that sender joined
       socket.to(roomId).emit('sender-joined', socket.id);
+      
+      // If there are already receivers, notify the sender about EACH one
+      // so it can initiate connections
+      room.receivers.forEach(receiverId => {
+        io.to(socket.id).emit('receiver-joined', receiverId);
+      });
     } else {
       room.receivers.add(socket.id);
       // Notify sender that a receiver joined
@@ -58,6 +64,7 @@ io.on('connection', (socket) => {
 
   // WebRTC Signaling: Offer
   socket.on('offer', (payload: { target: string; offer: any }) => {
+    console.log(`Offer from ${socket.id} to ${payload.target}`);
     io.to(payload.target).emit('offer', {
       caller: socket.id,
       offer: payload.offer,
@@ -66,6 +73,7 @@ io.on('connection', (socket) => {
 
   // WebRTC Signaling: Answer
   socket.on('answer', (payload: { target: string; answer: any }) => {
+    console.log(`Answer from ${socket.id} to ${payload.target}`);
     io.to(payload.target).emit('answer', {
       caller: socket.id,
       answer: payload.answer,
@@ -80,9 +88,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
-    
+  const leaveRoom = () => {
     // Clean up rooms
     for (const [roomId, room] of rooms.entries()) {
       if (room.sender === socket.id) {
@@ -99,6 +105,16 @@ io.on('connection', (socket) => {
         rooms.delete(roomId);
       }
     }
+  };
+
+  socket.on('leave-room', () => {
+    console.log(`User left room: ${socket.id}`);
+    leaveRoom();
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${socket.id}`);
+    leaveRoom();
   });
 });
 

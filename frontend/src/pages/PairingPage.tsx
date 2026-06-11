@@ -17,6 +17,13 @@ export default function PairingPage() {
     // Generate a random 6-character room code for the viewer
     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
     setGeneratedCode(code);
+
+    // Read room code from URL parameters if present (for QR scanning)
+    const params = new URLSearchParams(window.location.search);
+    const urlCode = params.get('code');
+    if (urlCode) {
+      setJoinCode(urlCode.toUpperCase());
+    }
   }, []);
 
   const handleStartViewer = () => {

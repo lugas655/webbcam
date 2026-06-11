@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Expand, Maximize, Settings, X } from 'lucide-react';
+import { Maximize, Settings, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useWebRTC } from '../lib/useWebRTC';
 
