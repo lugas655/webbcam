@@ -16,13 +16,26 @@ export function useWebRTC(roomId: string | null, role: 'sender' | 'receiver' | n
       iceQueues.current.delete(targetSocketId);
     }
 
-    const configuration = {
+    const configuration: RTCConfiguration = {
       iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:stun1.l.google.com:19302' },
         { urls: 'stun:stun2.l.google.com:19302' },
       ],
     };
+
+    // Add TURN server if environment variables are provided
+    const turnUrl = import.meta.env.VITE_TURN_URL;
+    const turnUsername = import.meta.env.VITE_TURN_USERNAME;
+    const turnCredential = import.meta.env.VITE_TURN_CREDENTIAL;
+
+    if (turnUrl && turnUsername && turnCredential) {
+      configuration.iceServers!.push({
+        urls: turnUrl,
+        username: turnUsername,
+        credential: turnCredential,
+      });
+    }
 
     const pc = new RTCPeerConnection(configuration);
     peerConnections.current.set(targetSocketId, pc);
